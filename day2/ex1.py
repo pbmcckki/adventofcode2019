@@ -12,6 +12,8 @@ with open('input.txt') as f:
                 p_mem[x] = p_mem[a] + p_mem[b]
         elif i == 2:
             p_mem[x] = p_mem[a] * p_mem[b]
+        else:
+            raise Exception("Something went wrong")
         pc += 4
         i, a, b, x = p_mem[pc:pc+4]
         print(pc)
