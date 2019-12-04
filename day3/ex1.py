@@ -4,7 +4,7 @@ def draw(board, commands):
         direction = command[0]
         length = int(command[1:])
         if direction == "L":
-            for x in range(c_x - length, c_x):
+            for x in range(c_x-1, c_x - length-1, -1):
                 board.add((x, c_y))
             c_x = c_x - length
         if direction == "R":
@@ -12,7 +12,7 @@ def draw(board, commands):
                 board.add((x, c_y))
             c_x = c_x + length
         if direction == "D":
-            for y in range(c_y - length, c_y):
+            for y in range(c_y-1, c_y - length-1, -1):
                 board.add((c_x, y))
             c_y = c_y - length
         if direction == "U":
