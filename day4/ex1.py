@@ -9,5 +9,6 @@ for number in range(353096, 843212 + 1):
     digits = str(number)
     if adjacents.search(digits) and sorted(digits) == list(digits):
         total += 1
+        print(digits)
 
 print(total)
