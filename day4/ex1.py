@@ -1,4 +1,4 @@
-# Super ineffective but quick
+# Super ineffective but quick to write - execution ~ 850ms
 # inputs 353096-843212
 
 
