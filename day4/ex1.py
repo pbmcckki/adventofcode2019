@@ -1,26 +1,13 @@
-# More effective, 1 loop only on digits; executio ~ 560ms
+# This is not much faster (shall be for bigger range) than previous but short - execution time - 650ms
 # inputs 353096-843212
 
-
-def check(tab):
-    i = tab[0]
-    has_adjacent = False
-    for x in range(1, len(tab)):
-        if i == tab[x]:
-            has_adjacent = True
-            i = tab[x]
-            continue
-        elif i > tab[x]:
-            return False
-        else:
-            i = tab[x]
-    return has_adjacent
-
+import re
 
 total = 0
+adjacents = re.compile("11|22|33|44|55|66|77|88|99|00")
 for number in range(353096, 843212 + 1):
     digits = str(number)
-    if check(digits):
+    if adjacents.search(digits) and sorted(digits) == list(digits):
         total += 1
 
 print(total)
