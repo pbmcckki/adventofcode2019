@@ -1,31 +1,26 @@
-# Super ineffective but quick to write - execution ~ 850ms
+# More effective, 1 loop only on digits; executio ~ 560ms
 # inputs 353096-843212
 
 
-def check_adjacent(tab):
+def check(tab):
     i = tab[0]
+    has_adjacent = False
     for x in range(1, len(tab)):
         if i == tab[x]:
-            return True
-        else:
+            has_adjacent = True
             i = tab[x]
-    return False
-
-
-def check_monotonic(tab):
-    i = tab[0]
-    for x in range(1, len(tab)):
-        if i <= tab[x]:
-            i = tab[x]
-        else:
+            continue
+        elif i > tab[x]:
             return False
-    return True
+        else:
+            i = tab[x]
+    return has_adjacent
 
 
 total = 0
 for number in range(353096, 843212 + 1):
     digits = str(number)
-    if check_adjacent(digits) and check_monotonic(digits):
+    if check(digits):
         total += 1
 
 print(total)
