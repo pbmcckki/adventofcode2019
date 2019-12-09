@@ -42,7 +42,7 @@ class Processor:
     def run(self):
         cmd = int(self.p_mem[self.pc]) % 100  # just two last digits is an opcode
         try:
-            while self.commands[cmd] != self.finalize:
+            while True:
                 modes = self.p_mem[self.pc].zfill(5)  # max len of instruction is 5
                 modes = modes[0:-2]  # but modes are without last two digits
                 addresses = self.get_addresses(modes)
@@ -53,8 +53,6 @@ class Processor:
                     break
                 self.pc += step
                 cmd = int(self.p_mem[self.pc]) % 100
-            if self.commands[cmd] == self.finalize:
-                raise ProcessorEndOfProgramException(self.id)
         except:
             print("Proc={}, PC={}, CMD={}".format(self.id, self.pc, self.p_mem[self.pc]))
             raise
@@ -120,5 +118,5 @@ class Processor:
             self.p_mem[addresses[2]] = "0"
         return 4
 
-    def finalize(self):
-        pass
+    def finalize(self,addresses):
+        raise ProcessorEndOfProgramException(self.id)
