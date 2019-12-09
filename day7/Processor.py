@@ -2,10 +2,16 @@
 
 
 class ProcessorInputException(Exception):
+    def __init__(self, id):
+        self.id = id
+
     pass
 
 
 class ProcessorEndOfProgramException(Exception):
+    def __init__(self, id):
+        self.id = id
+
     pass
 
 
@@ -29,6 +35,7 @@ class Processor:
 
     def reset(self):
         self.p_mem = self.store_mem.copy()
+        self.p_mem += ['99', '99', '99']  # Add padding so get_address can always work on 3 addresses
         self.pc = 0
         self.input_address = None
         self.output_value = None
@@ -48,7 +55,7 @@ class Processor:
                 self.pc += step
                 cmd = int(self.p_mem[self.pc]) % 100
             if self.commands[cmd] == self.finalize:
-                raise ProcessorEndOfProgramException
+                raise ProcessorEndOfProgramException(self.id)
         except:
             print("Proc={}, PC={}, CMD={}".format(self.id, self.pc, self.p_mem[self.pc]))
             raise
@@ -74,7 +81,7 @@ class Processor:
 
     def wait_for_input(self, addresses):
         self.input_address = addresses[0]
-        raise ProcessorInputException
+        raise ProcessorInputException(self.id)
 
     def push_input(self, data):
         self.p_mem[self.input_address] = str(data)
