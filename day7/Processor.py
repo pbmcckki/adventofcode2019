@@ -5,13 +5,17 @@ class ProcessorInputException(Exception):
     pass
 
 
+class ProcessorEndOfProgramException(Exception):
+    pass
+
+
 class Processor:
-    def __init__(self, program=None):
+    def __init__(self, program=None, id=0):
 
         self.commands = {1: self.addition, 2: self.multiplication, 3: self.wait_for_input, 4: self.output,
                          5: self.jump_if_true, 6: self.jump_if_false, 7: self.less_than, 8: self.equals,
                          99: self.finalize}
-
+        self.id = id
         self.pc = 0
         self.p_mem = []
         self.input_address = None
@@ -43,8 +47,10 @@ class Processor:
                     break
                 self.pc += step
                 cmd = int(self.p_mem[self.pc]) % 100
+            if self.commands[cmd] == self.finalize:
+                raise ProcessorEndOfProgramException
         except:
-            print("PC={}, CMD={}".format(self.pc, self.p_mem[self.pc]))
+            print("Proc={}, PC={}, CMD={}".format(self.id, self.pc, self.p_mem[self.pc]))
             raise
 
     def get_addresses(self, modes):

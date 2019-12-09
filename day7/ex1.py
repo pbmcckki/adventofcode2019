@@ -1,13 +1,12 @@
-from Processor import Processor
+from Processor import Processor, ProcessorEndOfProgramException
 from itertools import permutations
 
 with open('input.txt') as f:
     common_code = f.readline().strip().split(',')
 
-# common_code = [3, 15, 3, 16, 1002, 16, 10, 16, 1, 16, 15, 15, 4, 15, 99, 0, 0]
 common_code = [str(x) for x in common_code]
 
-computer = [Processor(common_code) for i in range(0, 5)]
+computer = [Processor(common_code,i) for i in range(0, 5)]
 max_vector = None
 max_output = 0
 for input_vector in permutations(range(0, 5)):
@@ -19,8 +18,12 @@ for input_vector in permutations(range(0, 5)):
 
     input_value = 0
     for i in range(0, 5):
-        computer[i].push_input(input_value)
+        try:
+            computer[i].push_input(input_value)
+        except ProcessorEndOfProgramException:
+            pass
         input_value = computer[i].read_output()
+
 
     output = int(computer[4].read_output())
     print(input_vector, output)
