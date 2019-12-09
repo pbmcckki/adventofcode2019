@@ -35,7 +35,6 @@ class Processor:
 
     def reset(self):
         self.p_mem = self.store_mem.copy()
-        self.p_mem += ['99', '99', '99']  # Add padding so get_address can always work on 3 addresses
         self.pc = 0
         self.input_address = None
         self.output_value = None
@@ -65,6 +64,8 @@ class Processor:
         i = 1
         for item in (reversed(modes)):
             if item == "0":  # position (addressed) mode
+                if (self.pc + i) >= len(self.p_mem):
+                    break
                 addresses.append(int(self.p_mem[self.pc + i]))
             if item == "1":  # immediate (direct address) mode
                 addresses.append(self.pc + i)
