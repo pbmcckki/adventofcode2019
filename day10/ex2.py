@@ -19,7 +19,7 @@ bitmap = []
 locations = []
 result = dict()
 max_visibility = 0
-max_angles=dict()
+max_angles = dict()
 
 with open('input.txt') as f:
     for line in f:
@@ -46,6 +46,7 @@ for location in locations:
 
         angle = root_element
 
+        # Add coords to a list of asteroids at the same angle
         vectors_at_angle = angles.get(angle, list())
         vectors_at_angle.append(element)
         angles[angle] = vectors_at_angle
@@ -56,7 +57,6 @@ for location in locations:
         max_visibility = len(angles.keys())
 
 location = result[max_visibility]
-
 
 
 # Now lets figure out how to sort by angle
@@ -87,18 +87,6 @@ def compare_angles(a1, a2):
         return 1
     # Now we land in the same quarter so watch out for same angle!
     else:
-        # denominator = find_denominator(*a1)
-        # root_element_a = (a1[0] / denominator, a1[1] / denominator)
-        # denominator = find_denominator(*a2)
-        # root_element_b = (a2[0] / denominator, a2[1] / denominator)
-        # if root_element_a == root_element_b:
-        #     if a1[0] == 0:
-        #         return cmp(a1[1], a2[1])
-        #     else:
-        #         return cmp(a1[0], a2[0])
-
-        # Well not the same angle so figure out which one is larger
-
         try:
             tg_a = a1[1] / a1[0]
         except ZeroDivisionError:
@@ -130,6 +118,6 @@ for angle in cycle(angles_sorted):
     if counter == 200:
         break
 
-coords = (relative_coords[0]+location[0],relative_coords[1]+location[1])
+coords = (relative_coords[0] + location[0], relative_coords[1] + location[1])
 
-print(coords[0]*100+coords[1])
+print(coords[0] * 100 + coords[1])
