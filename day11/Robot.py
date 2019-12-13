@@ -33,3 +33,17 @@ class Robot:
 
     def get_changes(self):
         return self.changes
+
+    def get_text_picture(self):
+        min_x = min((x[0] for x in self.painting.keys()))
+        min_y = min((x[1] for x in self.painting.keys()))
+        max_x = max((x[0] for x in self.painting.keys()))
+        max_y = max((x[1] for x in self.painting.keys()))
+
+        picture = [ [" " for x in range(0,max_x-min_x+1)] for y in range(0,max_y-min_y+1)]
+        for coords, color in self.painting.items():
+
+            if color == Robot.white:
+                picture[coords[1]][coords[0]] = "#"
+
+        return picture
