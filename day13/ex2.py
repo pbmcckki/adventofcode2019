@@ -40,24 +40,16 @@ def main(new_screen):
     try:
         while True:
             try:
-                new_screen.addstr(3, 1, "RUNNING {0} {1:5s}".format(computer.pc, computer.p_mem[computer.pc]))
-                new_screen.refresh()
                 computer.run()
             except Processor.ProcessorOutputException:
-                new_screen.addstr(3, 1, "OUTPUT")
-                new_screen.refresh()
                 x, y, t = computer.read_output()
-                new_screen.addstr(1, 1, "{}  {}  {}".format(x, y, t))
-                new_screen.refresh()
                 if x == -1 and y == 0:
                     board.update_score(t)
                 else:
                     board.update_point(x, y, t)
             except Processor.ProcessorInputException:
-                new_screen.addstr(3, 1, "INPUT")
-                new_screen.refresh()
-
                 board.refresh()
+                new_screen.refresh()
 
                 c = key_map.get(new_screen.getch(),'0')
                 computer.push_input(c)

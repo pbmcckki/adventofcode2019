@@ -84,8 +84,6 @@ class Processor:
         return 4
 
     def wait_for_input(self, addresses):
-        self.screen.addstr(10,1,"wait for input")
-        self.screen.refresh()
         self.input_address = addresses[0]
         raise ProcessorInputException(self.id)
 
