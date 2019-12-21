@@ -71,4 +71,4 @@ while True:
     elif chemicals['ORE'].composed == 0 and chemicals['ORE'].quantity > 0:
         low = current
 
-print(current)
+print("Fuel to produce:", current)
