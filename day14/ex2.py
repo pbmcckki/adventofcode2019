@@ -1,9 +1,9 @@
 import re
 
-count = 0
 pattern = re.compile('(\d+ \w+)')
 
 chemicals = dict()
+chemicals_one_cycle = dict()
 
 
 class Chemical:
@@ -32,7 +32,7 @@ class Chemical:
         self.quantity -= number
 
 
-with open("input.txt") as f:
+with open("input2.txt") as f:
     for line in f:
         line = line.strip()
         groups = pattern.findall(line)
@@ -44,6 +44,32 @@ with open("input.txt") as f:
         batch, name = groups[-1].split()
         batch = int(batch)
         chemicals[name] = Chemical(name, batch, ingredients)
+        chemicals_one_cycle[name] = Chemical(name, batch, ingredients)
+
 chemicals['ORE'] = Chemical('ORE', 1, None)
-chemicals['FUEL'].use(1)
-print(chemicals['ORE'].composed)
+
+chemicals_one_cycle = {chemical: chemicals[chemical].quantity for chemical in chemicals}
+
+count = 0
+while True:
+    count += 1
+    chemicals['FUEL'].use(1)
+    for chemical in chemicals:
+        if chemicals[chemical].quantity == chemicals_one_cycle[chemical]:
+            continue
+        else:
+            break
+    else:
+        break
+
+total = 1000000000000
+ore_used = chemicals['ORE'].composed
+cycles = total // ore_used
+chemicals['FUEL'].composed = count * cycles
+chemicals['ORE'].quantity = total % ore_used
+
+ore_used = chemicals['ORE'].composed
+while ore_used == chemicals['ORE'].composed:
+    chemicals['FUEL'].use(1)
+
+print(chemicals['FUEL'].composed - 1)
