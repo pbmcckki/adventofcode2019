@@ -3,7 +3,6 @@ import re
 pattern = re.compile('(\d+ \w+)')
 
 chemicals = dict()
-chemicals_one_cycle = dict()
 
 
 class Chemical:
@@ -32,7 +31,7 @@ class Chemical:
         self.quantity -= number
 
 
-with open("input2.txt") as f:
+with open("input.txt") as f:
     for line in f:
         line = line.strip()
         groups = pattern.findall(line)
@@ -44,32 +43,32 @@ with open("input2.txt") as f:
         batch, name = groups[-1].split()
         batch = int(batch)
         chemicals[name] = Chemical(name, batch, ingredients)
-        chemicals_one_cycle[name] = Chemical(name, batch, ingredients)
 
 chemicals['ORE'] = Chemical('ORE', 1, None)
 
-chemicals_one_cycle = {chemical: chemicals[chemical].quantity for chemical in chemicals}
+total = 1000000000000
+chemicals['ORE'].quantity = total
+high = total
+low = 0
+current = total
+previous = 0
 
-count = 0
+# Just binary search
 while True:
-    count += 1
-    chemicals['FUEL'].use(1)
     for chemical in chemicals:
-        if chemicals[chemical].quantity == chemicals_one_cycle[chemical]:
-            continue
-        else:
-            break
-    else:
+        chemicals[chemical].quantity = 0
+        chemicals[chemical].composed = 0
+    chemicals['ORE'].quantity = total
+    previous = current
+    current = low + (high - low) // 2
+    if previous == current:
         break
 
-total = 1000000000000
-ore_used = chemicals['ORE'].composed
-cycles = total // ore_used
-chemicals['FUEL'].composed = count * cycles
-chemicals['ORE'].quantity = total % ore_used
+    chemicals['FUEL'].use(current)
 
-ore_used = chemicals['ORE'].composed
-while ore_used == chemicals['ORE'].composed:
-    chemicals['FUEL'].use(1)
+    if chemicals['ORE'].composed > 0:
+        high = current
+    elif chemicals['ORE'].composed == 0 and chemicals['ORE'].quantity > 0:
+        low = current
 
-print(chemicals['FUEL'].composed - 1)
+print(current)
