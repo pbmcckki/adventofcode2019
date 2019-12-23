@@ -6,6 +6,13 @@ class Step(Tree):
         super(Step, self).__init__(upstream)
         self.coords = coords
         self.value = value
+        if value is not None:
+            if upstream:
+                self.value_dict = upstream.value_dict
+                self.value_dict[value] = self.value_dict.get(value, set())
+                self.value_dict[value].add(self)
+            else:
+                self.value_dict = {value: {self}}
 
     def add_leaf(self, direction, value=None):
         if direction == 1:
@@ -26,6 +33,8 @@ class Step(Tree):
         self.leafs.append(new_leaf)
         return new_leaf
 
-
     def set_value(self, value):
         self.value = value
+
+    def search_by_value(self, value):
+        return self.value_dict.get(value, None)

@@ -20,3 +20,9 @@ class TestTree(TestCase):
     def test_traverse(self):
         for node in self.leaf1132.go_upstream():
             print(node.coords, node.depth, node.value)
+
+    def test_search(self):
+        self.assertIsNone(self.root.search_by_value('X'))
+        self.assertSetEqual(self.root.search_by_value("O"), {self.root})
+        self.assertSetEqual(self.root.search_by_value("."),
+                            {self.leaf1, self.leaf11, self.leaf113, self.leaf1132})
