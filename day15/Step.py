@@ -39,10 +39,5 @@ class Step(Tree):
     def search_by_value(self, value):
         return self.value_dict.get(value, None)
 
-    def semi_delete(self, instance):
-        self.terminal_leafs.remove(self)
-        self.upstream.leafs.remove(self)
-        self.value_dict[self.value].remove(self)
-
     def __str__(self):
         return "{} - {}".format(self.coords, self.value)
