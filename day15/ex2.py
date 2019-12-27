@@ -58,16 +58,16 @@ for terminal_leaf in step_tree.get_terminal_leafs():
     for leaf in terminal_leaf.go_upstream():
         if leaf.value != 0:
             siblings = adjacency_map.get(leaf.coords, set())
-            if not siblings:
-                for l in leaf.leafs:
-                    siblings.add(l.coords)
-            elif leaf.upstream:
+            for l in leaf.leafs:
+                siblings.add(l.coords)
+            if leaf.upstream:
                 siblings.add(leaf.upstream.coords)
             adjacency_map[leaf.coords] = siblings
 
 current_points = set([oxygen_coords])
 count = 0
 
+# Just traverse the map, but do not go twice over same point
 while True:
     next_current_points = set()
     for point in current_points:
@@ -75,11 +75,11 @@ while True:
         try:
             del adjacency_map[point]
         except KeyError:
+            # Set difference instead remove to avoid double exception handling
             next_current_points = next_current_points - set(point)
     if not adjacency_map:
         break
     count += 1
     current_points = next_current_points
 
-# Remove starting point
 print(count)
