@@ -23,6 +23,9 @@ class TestTree(TestCase):
 
     def test_search(self):
         self.assertIsNone(self.root.search_by_value('X'))
-        self.assertSetEqual(self.root.search_by_value("O"), {self.root})
-        self.assertSetEqual(self.root.search_by_value("."),
-                            {self.leaf1, self.leaf11, self.leaf113, self.leaf1132})
+        self.assertSequenceEqual(self.root.search_by_value("O"), [self.root])
+        self.assertSetEqual(set(self.root.search_by_value(".")),
+                       {self.leaf1, self.leaf11, self.leaf113, self.leaf1132})
+
+    def test_print(self):
+        self.assertEqual(str(self.leaf11),"(0, -2) - .")

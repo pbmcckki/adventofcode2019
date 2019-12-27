@@ -9,10 +9,10 @@ class Step(Tree):
         if value is not None:
             if upstream:
                 self.value_dict = upstream.value_dict
-                self.value_dict[value] = self.value_dict.get(value, set())
-                self.value_dict[value].add(self)
+                self.value_dict[value] = self.value_dict.get(value, list())
+                self.value_dict[value].append(self)
             else:
-                self.value_dict = {value: {self}}
+                self.value_dict = {value: [self]}
 
     def add_leaf(self, direction, value=None):
         if direction == 1:
@@ -38,3 +38,11 @@ class Step(Tree):
 
     def search_by_value(self, value):
         return self.value_dict.get(value, None)
+
+    def semi_delete(self, instance):
+        self.terminal_leafs.remove(self)
+        self.upstream.leafs.remove(self)
+        self.value_dict[self.value].remove(self)
+
+    def __str__(self):
+        return "{} - {}".format(self.coords, self.value)
